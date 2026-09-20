@@ -4,7 +4,7 @@ import Studio from "./pages/Studio"
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Tautan">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/studio/:id" element={<Studio />} />
