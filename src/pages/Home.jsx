@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom"
 import { catalogs } from "../data/catalogs"
 import "./Home.css"
 
-const chips = ["Semua", "Nikah", "Lamaran", "Ultah", "Syukuran", "Vintage", "Adat", "Islami"]
-const categories = ["Nikah", "Lamaran", "Ultah", "Syukuran"]
-const WA = "https://wa.me/6281234567890"
+const chips = ["Semua", "Nikah", "Lamaran", "Ultah", "Syukuran"]
+const categories = chips.slice(1)
+const WA = "https://wa.me/6285163501302"
 
 function formatPrice(n) {
   return `${Math.round(n / 1000)}rb`
@@ -38,7 +38,7 @@ export default function Home() {
       if (!c.active) return false
       const hay = `${c.name} ${c.desc} ${c.category} ${c.style}`.toLowerCase()
       if (key && !hay.includes(key)) return false
-      if (chipKey !== "semua" && c.category !== chipKey && c.style !== chipKey) return false
+      if (chipKey !== "semua" && c.category !== chipKey) return false
       return true
     })
   }, [q, chip])

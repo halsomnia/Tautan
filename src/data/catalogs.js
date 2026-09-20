@@ -50,4 +50,21 @@ export const catalogs = [
     songs: vintagePack.songs,
   },
   { id: "ranting", name: "Ranting", category: "ultah", style: "vintage", desc: "Hangat, untuk pesta rumahan.", price: 59000, active: true, thumb: "#c4b0a4", layout: "cover-scroll", ...vintagePack },
+  { id: "vintage", name: "Vintage", category: "nikah", style: "vintage", desc: "Nuansa foto lama, hangat dan personal.", price: 89000, promoPrice: 119000, active: true, thumb: "#c9ab8f", layout: "cover-scroll",
+    palettes: [
+      { id: "sephia", name: "Sephia", font: 0, colors: { bg: "#F1E4D3", surface: "#FFF9F0", ink: "#5A3A2A", accent: "#B98B5E", mute: "#93765F" } },
+      { id: "mawar-kering", name: "Mawar Kering", font: 1, colors: { bg: "#F3E7E4", surface: "#FFF7F5", ink: "#5B3A3D", accent: "#B97A83", mute: "#9C7A7C" } },
+      { id: "zaitun-tua", name: "Zaitun Tua", font: 2, colors: { bg: "#EDE9DC", surface: "#F8F6ED", ink: "#3C3A2C", accent: "#8A8F5C", mute: "#86846A" } },
+    ],
+    fonts: [
+      { id: "naskah", name: "Naskah", title: "Cormorant Garamond", body: "DM Sans" },
+      { id: "tinta-lama", name: "Tinta Lama", title: "Playfair Display", body: "Lora" },
+      { id: "surat", name: "Surat", title: "Libre Baskerville", body: "Source Sans 3" },
+    ],
+    songs: [
+      { id: "a", name: "Piringan Hitam" },
+      { id: "b", name: "Senja Jingga" },
+      { id: "c", name: "Kaset Lawas" },
+    ],
+  },
 ]

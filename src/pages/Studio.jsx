@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { catalogs } from "../data/catalogs"
 import "./Studio.css"
@@ -8,11 +8,10 @@ export default function Studio() {
   const tema = catalogs.find((c) => c.id === id)
 
   const [open, setOpen] = useState(false)
-  const [tab, setTab] = useState("warna")
+  const [floating, setFloating] = useState(null) // null | "warna" | "huruf" | "lagu" | "edit" | "order"
   const [palette, setPalette] = useState(0)
   const [font, setFont] = useState(0)
   const [song, setSong] = useState(0)
-  const [panel, setPanel] = useState("opsi")
   const [note, setNote] = useState("")
   const [form, setForm] = useState({
     pria: "Yudi",
@@ -23,6 +22,11 @@ export default function Studio() {
     pemesan: "",
     wa: "",
   })
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme")
+    document.documentElement.dataset.theme = saved === "dark" ? "dark" : "light"
+  }, [])
 
   if (!tema) {
     return (
@@ -57,69 +61,93 @@ export default function Studio() {
   function pickPalette(i) {
     setPalette(i)
     setFont(tema.palettes[i].font ?? 0)
+    setFloating(null)
+  }
+
+  function pickFont(i) {
+    setFont(i)
+    setFloating(null)
+  }
+
+  function pickSong(i) {
+    setSong(i)
+    setFloating(null)
+  }
+
+  function toggleFloating(name) {
+    setNote("")
+    setFloating((f) => (f === name ? null : name))
   }
 
   function submitOrder() {
     if (!form.pria.trim() || !form.wanita.trim()) {
       setNote("Isi nama pasangan dulu.")
-      setPanel("isi")
+      setFloating("edit")
       return
     }
     if (!form.pemesan.trim() || !form.wa.trim()) {
       setNote("Isi nama pemesan dan WhatsApp.")
-      setPanel("order")
+      setFloating("order")
       return
     }
     setNote("Pesanan siap. Nanti masuk admin.")
+    setFloating(null)
   }
 
+  const floatingTitle = {
+    warna: "Pilih Warna",
+    huruf: "Pilih Huruf",
+    lagu: "Pilih Lagu",
+    edit: "Edit Detail",
+    order: "Order",
+  }[floating]
+
   return (
-    <div className="studio" style={themeStyle}>
+    <div className="studio">
       <header className="studio-bar">
         <Link to="/" className="back">← {tema.name}</Link>
         <span className="word">tautan</span>
       </header>
 
-      {!open ? (
-        <div className="cover">
-          <p className="to">Kepada Yth. Bapak/Ibu</p>
-          <h1>{form.pria} &amp; {form.wanita}</h1>
-          <button type="button" className="open" onClick={() => setOpen(true)}>
-            Buka undangan
-          </button>
-        </div>
-      ) : (
-        <div className={"invite" + (panel === "mini" ? " tall" : "")}>
-          <p className="kicker">The wedding of</p>
-          <h2>{form.pria} &amp; {form.wanita}</h2>
-          <p>{form.tanggal}</p>
-          <div className="block">
-            <b>Akad</b>
-            <p>{form.akad}</p>
+      {/* Area ini yang mengikuti palette & font tema/template */}
+      <div className="preview" style={themeStyle}>
+        {!open ? (
+          <div className="cover">
+            <p className="to">Kepada Yth. Bapak/Ibu</p>
+            <h1>{form.pria} &amp; {form.wanita}</h1>
+            <button type="button" className="open" onClick={() => setOpen(true)}>
+              Buka undangan
+            </button>
           </div>
-          <div className="block">
-            <b>Resepsi</b>
-            <p>{form.resepsi}</p>
+        ) : (
+          <div className="invite">
+            <p className="kicker">The wedding of</p>
+            <h2>{form.pria} &amp; {form.wanita}</h2>
+            <p>{form.tanggal}</p>
+            <div className="block">
+              <b>Akad</b>
+              <p>{form.akad}</p>
+            </div>
+            <div className="block">
+              <b>Resepsi</b>
+              <p>{form.resepsi}</p>
+            </div>
+            <p className="song">Lagu: {tema.songs[song].name}</p>
           </div>
-          <p className="song">Lagu: {tema.songs[song].name}</p>
-        </div>
-      )}
+        )}
+      </div>
 
+      {/* Dock & floating panel ini pakai palette brand app (ikut mode terang/gelap), bukan palette tema */}
       {open && (
-        <div className={"dock" + (panel === "mini" ? " mini" : "")}>
-          <button className="chev" type="button" onClick={() => setPanel(panel === "mini" ? "opsi" : "mini")}>
-            {panel === "mini" ? "▴" : "▾"}
-          </button>
-
-          {panel !== "mini" && (
-            <>
-              <div className="opts">
-                <button className={tab === "warna" ? "opt on" : "opt"} onClick={() => { setTab("warna"); setPanel("opsi") }}>Warna</button>
-                <button className={tab === "huruf" ? "opt on" : "opt"} onClick={() => { setTab("huruf"); setPanel("opsi") }}>Huruf</button>
-                <button className={tab === "lagu" ? "opt on" : "opt"} onClick={() => { setTab("lagu"); setPanel("opsi") }}>Lagu</button>
+        <div className="dock">
+          {floating && (
+            <div className="floating">
+              <div className="floating-head">
+                <span>{floatingTitle}</span>
+                <button className="close" type="button" onClick={() => setFloating(null)} aria-label="Tutup">✕</button>
               </div>
 
-              {panel === "opsi" && tab === "warna" && (
+              {floating === "warna" && (
                 <div className="pals">
                   {tema.palettes.map((p, i) => (
                     <button key={p.id} className={i === palette ? "pal on" : "pal"} onClick={() => pickPalette(i)} type="button" title={p.name}>
@@ -131,27 +159,27 @@ export default function Studio() {
                 </div>
               )}
 
-              {panel === "opsi" && tab === "huruf" && (
+              {floating === "huruf" && (
                 <div className="pals">
                   {tema.fonts.map((f, i) => (
-                    <button key={f.id} className={i === font ? "pill on" : "pill"} onClick={() => setFont(i)} type="button">
+                    <button key={f.id} className={i === font ? "pill on" : "pill"} onClick={() => pickFont(i)} type="button">
                       {f.name}
                     </button>
                   ))}
                 </div>
               )}
 
-              {panel === "opsi" && tab === "lagu" && (
+              {floating === "lagu" && (
                 <div className="pals">
                   {tema.songs.map((s, i) => (
-                    <button key={s.id} className={i === song ? "pill on" : "pill"} onClick={() => setSong(i)} type="button">
+                    <button key={s.id} className={i === song ? "pill on" : "pill"} onClick={() => pickSong(i)} type="button">
                       {s.name}
                     </button>
                   ))}
                 </div>
               )}
 
-              {panel === "isi" && (
+              {floating === "edit" && (
                 <div className="fields">
                   <input value={form.pria} onChange={(e) => setField("pria", e.target.value)} placeholder="Nama pria" />
                   <input value={form.wanita} onChange={(e) => setField("wanita", e.target.value)} placeholder="Nama wanita" />
@@ -161,7 +189,7 @@ export default function Studio() {
                 </div>
               )}
 
-              {panel === "order" && (
+              {floating === "order" && (
                 <div className="fields">
                   <input value={form.pemesan} onChange={(e) => setField("pemesan", e.target.value)} placeholder="Nama pemesan" />
                   <input value={form.wa} onChange={(e) => setField("wa", e.target.value)} placeholder="Nomor WhatsApp" />
@@ -169,15 +197,21 @@ export default function Studio() {
               )}
 
               {note && <p className="note">{note}</p>}
-            </>
+            </div>
           )}
 
+          <div className="opts">
+            <button className={floating === "warna" ? "opt on" : "opt"} onClick={() => toggleFloating("warna")} type="button">Warna</button>
+            <button className={floating === "huruf" ? "opt on" : "opt"} onClick={() => toggleFloating("huruf")} type="button">Huruf</button>
+            <button className={floating === "lagu" ? "opt on" : "opt"} onClick={() => toggleFloating("lagu")} type="button">Lagu</button>
+          </div>
+
           <div className="actions">
-            <button className={panel === "isi" ? "ghost on" : "ghost"} type="button" onClick={() => setPanel(panel === "isi" ? "opsi" : "isi")}>
-              Isi
+            <button className={floating === "edit" ? "ghost on" : "ghost"} type="button" onClick={() => toggleFloating("edit")}>
+              Edit Detail
             </button>
-            <button className="order" type="button" onClick={() => { setNote(""); panel === "order" ? submitOrder() : setPanel("order") }}>
-              {panel === "order" ? "Kirim · " + price : "Order · " + price}
+            <button className="order" type="button" onClick={() => (floating === "order" ? submitOrder() : toggleFloating("order"))}>
+              {floating === "order" ? "Kirim · " + price : "Order · " + price}
             </button>
           </div>
         </div>
