@@ -1,70 +1,90 @@
-const vintagePack = {
+const editorialPack = {
+  layout: "editorial",
   palettes: [
-    { id: "hangat", name: "Hangat", font: 0, colors: { bg: "#F3E6D8", surface: "#FFF8F1", ink: "#6B3A2F", accent: "#C4A574", mute: "#A4846A" } },
-    { id: "daun", name: "Daun", font: 0, colors: { bg: "#EFE8DC", surface: "#F7F4EC", ink: "#3F4A3C", accent: "#6B7F5A", mute: "#7E8A74" } },
-    { id: "hati", name: "Hati", font: 1, colors: { bg: "#F4EDE6", surface: "#FFFCF8", ink: "#4A3B34", accent: "#B23A3A", mute: "#8A736C" } },
+    {
+      id: "salju",
+      name: "Salju",
+      font: 0,
+      colors: {
+        bg: "#f6f3ee",
+        surface: "#fffcf8",
+        ink: "#161412",
+        accent: "#161412",
+        mute: "#7a736c",
+        line: "#ded6cc",
+        overlay: "rgba(22, 20, 18, 0.38)",
+      },
+    },
+    {
+      id: "arang",
+      name: "Arang",
+      font: 0,
+      colors: {
+        bg: "#1a1918",
+        surface: "#242220",
+        ink: "#f3eee7",
+        accent: "#f3eee7",
+        mute: "#a39b93",
+        line: "#3a3632",
+        overlay: "rgba(0, 0, 0, 0.45)",
+      },
+    },
+    {
+      id: "malam",
+      name: "Malam",
+      font: 1,
+      colors: {
+        bg: "#0e0d0c",
+        surface: "#171615",
+        ink: "#f6f1ea",
+        accent: "#f6f1ea",
+        mute: "#9a938b",
+        line: "#2a2826",
+        overlay: "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    {
+      id: "segel",
+      name: "Segel",
+      font: 0,
+      colors: {
+        bg: "#f4efe8",
+        surface: "#fffcf8",
+        ink: "#161412",
+        accent: "#b33434",
+        mute: "#7a736c",
+        line: "#e0d7cd",
+        overlay: "rgba(22, 20, 18, 0.4)",
+      },
+    },
   ],
   fonts: [
-    { id: "klasik", name: "Klasik", title: "Cormorant Garamond", body: "DM Sans" },
-    { id: "tinta", name: "Tinta", title: "Playfair Display", body: "Source Sans 3" },
-    { id: "halus", name: "Halus", title: "Libre Baskerville", body: "Lora" },
+    { id: "editorial", name: "Editorial", display: "Pinyon Script", title: "Cormorant Garamond", body: "Jost" },
+    { id: "modern", name: "Modern", display: "Bodoni Moda", title: "Bodoni Moda", body: "DM Sans" },
+    { id: "klasik", name: "Klasik", display: "Allura", title: "Playfair Display", body: "Lora" },
   ],
   songs: [
-    { id: "a", name: "Sore" },
-    { id: "b", name: "Tenang" },
-    { id: "c", name: "Piano" },
+    { id: "piano", name: "Piano malam" },
+    { id: "gitar", name: "Gitar sore" },
+    { id: "biola", name: "Biola tenang" },
   ],
 }
 
 export const catalogs = [
-  { id: "seruni", name: "Seruni", category: "nikah", style: "vintage", desc: "Kertas tua, bunga kering.", price: 79000, promoPrice: 99000, active: true, thumb: "#cbb7ad", layout: "cover-scroll", ...vintagePack },
-  { id: "kawung", name: "Kawung", category: "nikah", style: "adat", desc: "Batik halus, maroon hangat.", price: 79000, active: true, thumb: "#b89a8c", layout: "cover-scroll",
-    palettes: [
-      { id: "batik", name: "Batik", font: 0, colors: { bg: "#F4EDE6", surface: "#FFF8F1", ink: "#5C2A2A", accent: "#C4A574", mute: "#A4846A" } },
-      { id: "soga", name: "Soga", font: 0, colors: { bg: "#EFE8DC", surface: "#F6F0E6", ink: "#4A3B34", accent: "#A67C52", mute: "#8A7368" } },
-      { id: "malam", name: "Malam", font: 1, colors: { bg: "#E8DFD4", surface: "#F3ECE4", ink: "#2C2420", accent: "#8C3A3A", mute: "#7A6A62" } },
-    ],
-    fonts: vintagePack.fonts,
-    songs: [{ id: "a", name: "Gending" }, { id: "b", name: "Sore" }, { id: "c", name: "Piano" }],
-  },
-  { id: "sajadah", name: "Sajadah", category: "nikah", style: "islami", desc: "Tenang, nuansa syar’i.", price: 79000, active: true, thumb: "#c5c1b6", layout: "cover-scroll",
-    palettes: [
-      { id: "gading", name: "Gading", font: 0, colors: { bg: "#F4F1EC", surface: "#FFFcf8", ink: "#3D4A3C", accent: "#C4B7A0", mute: "#7A736C" } },
-      { id: "tinta", name: "Tinta", font: 1, colors: { bg: "#F4F1EC", surface: "#FFFcf8", ink: "#1F1C19", accent: "#7A736C", mute: "#8A8680" } },
-      { id: "zamrud", name: "Zamrud", font: 0, colors: { bg: "#F0EBE3", surface: "#F7F4EC", ink: "#2F4A40", accent: "#6B8F7A", mute: "#6E7F76" } },
-    ],
-    fonts: vintagePack.fonts,
-    songs: [{ id: "a", name: "Nasyid" }, { id: "b", name: "Tenang" }, { id: "c", name: "Piano" }],
-  },
-  { id: "senyap", name: "Senyap", category: "lamaran", style: "minimal", desc: "Minim, cream, tipografi bersih.", price: 49000, promoPrice: 79000, active: true, thumb: "#d2c6b8", layout: "cover-scroll",
-    palettes: [
-      { id: "cream", name: "Cream", font: 2, colors: { bg: "#F4F1EC", surface: "#FFFcf8", ink: "#1F1C19", accent: "#C4B7A0", mute: "#7A736C" } },
-      { id: "batu", name: "Batu", font: 2, colors: { bg: "#EEEAE4", surface: "#F7F5F1", ink: "#3A342F", accent: "#A39B93", mute: "#8A8680" } },
-      { id: "hati", name: "Hati", font: 0, colors: { bg: "#F4EDE6", surface: "#FFFcf8", ink: "#1F1C19", accent: "#B23A3A", mute: "#8A736C" } },
-    ],
-    fonts: [
-      { id: "klasik", name: "Klasik", title: "Cormorant Garamond", body: "DM Sans" },
-      { id: "tinta", name: "Tinta", title: "Playfair Display", body: "Source Sans 3" },
-      { id: "bersih", name: "Bersih", title: "DM Sans", body: "DM Sans" },
-    ],
-    songs: vintagePack.songs,
-  },
-  { id: "ranting", name: "Ranting", category: "ultah", style: "vintage", desc: "Hangat, untuk pesta rumahan.", price: 59000, active: true, thumb: "#c4b0a4", layout: "cover-scroll", ...vintagePack },
-  { id: "vintage", name: "Vintage", category: "nikah", style: "vintage", desc: "Nuansa foto lama, hangat dan personal.", price: 89000, promoPrice: 119000, active: true, thumb: "#c9ab8f", layout: "cover-scroll",
-    palettes: [
-      { id: "sephia", name: "Sephia", font: 0, colors: { bg: "#F1E4D3", surface: "#FFF9F0", ink: "#5A3A2A", accent: "#B98B5E", mute: "#93765F" } },
-      { id: "mawar-kering", name: "Mawar Kering", font: 1, colors: { bg: "#F3E7E4", surface: "#FFF7F5", ink: "#5B3A3D", accent: "#B97A83", mute: "#9C7A7C" } },
-      { id: "zaitun-tua", name: "Zaitun Tua", font: 2, colors: { bg: "#EDE9DC", surface: "#F8F6ED", ink: "#3C3A2C", accent: "#8A8F5C", mute: "#86846A" } },
-    ],
-    fonts: [
-      { id: "naskah", name: "Naskah", title: "Cormorant Garamond", body: "DM Sans" },
-      { id: "tinta-lama", name: "Tinta Lama", title: "Playfair Display", body: "Lora" },
-      { id: "surat", name: "Surat", title: "Libre Baskerville", body: "Source Sans 3" },
-    ],
-    songs: [
-      { id: "a", name: "Piringan Hitam" },
-      { id: "b", name: "Senja Jingga" },
-      { id: "c", name: "Kaset Lawas" },
-    ],
+  {
+    id: "hitam-putih",
+    name: "Hitam Putih",
+    category: "nikah",
+    style: "editorial",
+    desc: "Editorial monokrom. Tenang, rapi, mudah dibaca.",
+    price: 89000,
+    promoPrice: 119000,
+    promo: true,
+    active: true,
+    ...editorialPack,
   },
 ]
+
+export function getCatalog(id) {
+  return catalogs.find((c) => c.id === id)
+}

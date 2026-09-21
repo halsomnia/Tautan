@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import CoverThumb from "../components/CoverThumb"
 import { catalogs } from "../data/catalogs"
 import "./Home.css"
 
-const chips = ["Semua", "Nikah", "Lamaran", "Ultah", "Syukuran"]
-const categories = chips.slice(1)
+const chips = ["Semua", "Promo", "Nikah", "Lamaran", "Ultah", "Syukuran"]
+const categories = ["Nikah", "Lamaran", "Ultah", "Syukuran"]
 const WA = "https://wa.me/6285163501302"
 
 function formatPrice(n) {
@@ -24,9 +25,10 @@ export default function Home() {
   }, [theme])
 
   const counts = useMemo(() => {
-    const out = {}
+    const out = { promo: 0 }
     catalogs.filter((c) => c.active).forEach((c) => {
       out[c.category] = (out[c.category] || 0) + 1
+      if (c.promo) out.promo += 1
     })
     return out
   }, [])
@@ -38,6 +40,7 @@ export default function Home() {
       if (!c.active) return false
       const hay = `${c.name} ${c.desc} ${c.category} ${c.style}`.toLowerCase()
       if (key && !hay.includes(key)) return false
+      if (chipKey === "promo") return Boolean(c.promo)
       if (chipKey !== "semua" && c.category !== chipKey) return false
       return true
     })
@@ -57,23 +60,38 @@ export default function Home() {
         </button>
       </header>
       <p className="tag">Pilih tema. Isi data. Kami kirim tautannya.</p>
-      <input
-        className="search"
-        placeholder="Cari tema, kategori, gaya…"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-      />
-      <div className="chips">
+      <label className="search-wrap">
+        <input
+          className="search"
+          placeholder="Cari tema, kategori, gaya…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
+        {q && (
+          <button className="search-clear" type="button" onClick={() => setQ("")} aria-label="Hapus pencarian">
+            Hapus
+          </button>
+        )}
+      </label>
+      <div className="chips" role="tablist" aria-label="Filter katalog">
         {chips.map((c) => (
-          <button key={c} className={chip === c ? "chip on" : "chip"} onClick={() => setChip(c)} type="button">
+          <button
+            key={c}
+            className={chip === c ? "chip on" : "chip"}
+            onClick={() => setChip(c)}
+            type="button"
+          >
             {c}
           </button>
         ))}
       </div>
       <div className="grid">
         {items.map((c) => (
-          <article key={c.id} className="card" onClick={() => navigate(`/studio/${c.id}`)}>
-            <div className="thumb" style={{ background: c.thumb }} />
+          <article key={c.id} className="card">
+            <button type="button" className="thumb-btn" onClick={() => navigate(`/studio/${c.id}`)} aria-label={`Lihat demo ${c.name}`}>
+              <CoverThumb name={c.name} couple="Alya & Raka" />
+            </button>
+            {c.promo && <span className="badge">Promo</span>}
             <div className="meta">
               <div className="row1">
                 <span className="name">{c.name}</span>
@@ -84,17 +102,38 @@ export default function Home() {
                 {c.promoPrice ? <span className="old">{formatPrice(c.promoPrice)}</span> : null}
                 <span className="now">{formatPrice(c.price)}</span>
               </div>
+              <div className="card-actions">
+                <button type="button" className="demo" onClick={() => navigate(`/studio/${c.id}`)}>
+                  Lihat demo
+                </button>
+              </div>
             </div>
           </article>
         ))}
       </div>
+      {items.length === 0 && (
+        <div className="empty">
+          <p>Tidak ada tema untuk filter ini.</p>
+          <button type="button" className="demo" onClick={() => { setChip("Semua"); setQ("") }}>
+            Tampilkan semua
+          </button>
+        </div>
+      )}
 
       {menu && (
         <div className="nav">
-          <button className="nav-dim" type="button" onClick={() => setMenu(false)} />
+          <button className="nav-dim" type="button" onClick={() => setMenu(false)} aria-label="Tutup menu" />
           <aside className="drawer">
             <div className="word">tautan</div>
             <p className="h">Kategori</p>
+            <button
+              className={chip === "Promo" ? "nav-item on" : "nav-item"}
+              type="button"
+              onClick={() => pickCategory("Promo")}
+            >
+              Promo
+              <span>{counts.promo || 0}</span>
+            </button>
             {categories.map((name) => (
               <button
                 key={name}
