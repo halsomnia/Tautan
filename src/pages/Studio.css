@@ -47,6 +47,7 @@
 .pal span { padding: 0 8px; font-size: 12px; }
 .pal.on, .pill.on { outline: 2px solid var(--hati); }
 .pill { padding: 7px 12px; font-size: 12px; }
+label.pill { cursor: pointer; display: inline-flex; align-items: center; }
 
 .tools { display: flex; justify-content: center; gap: 8px; margin: 0 12px 8px; }
 .tool {

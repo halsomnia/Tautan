@@ -34,6 +34,17 @@
   font-weight: 600;
   margin: 6px 0 4px;
 }
+.thumb-cover.tema2 {
+  color: #f3e6d2;
+  background:
+    linear-gradient(180deg, #3a2a20 0%, #6a5138 40%, #e9dcc8 100%);
+}
+.thumb-cover.tema2 strong {
+  font-family: "Great Vibes", cursive;
+  font-size: 28px;
+  font-weight: 400;
+  color: #6b4a2e;
+}
 .thumb-cover.vintage strong {
   font-family: "Great Vibes", cursive;
   font-size: 28px;

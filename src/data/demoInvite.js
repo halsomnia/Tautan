@@ -23,6 +23,9 @@ export const demoInvite = {
   bankNama: "BCA",
   bankRek: "1234567890",
   bankAn: "Alya Putri Rahmawati",
+  igPria: "raka.aditya",
+  igWanita: "alya.rahma",
+  alamatKado: "Jl. Cendana No. 12, Bandung",
   features: {
     ayat: true,
     gallery: true,

@@ -4,10 +4,21 @@ import { getCatalog } from "../data/catalogs"
 import { demoInvite } from "../data/demoInvite"
 import { revokePhoto } from "../lib/photos"
 import HitamPutih from "../themes/hitam-putih/HitamPutih"
+import Tema2 from "../themes/tema-2/Tema2"
 import "./Studio.css"
 
 const DRAFT_KEY = (id) => `bersemi-draft-${id}`
-const emptyPhotos = () => ({ cover: null, pria: null, wanita: null, gallery: [null, null, null, null] })
+const themes = { "hitam-putih": HitamPutih, "tema-2": Tema2 }
+const emptyPhotos = () => ({
+  cover: null,
+  names: null,
+  ayat: null,
+  pria: null,
+  wanita: null,
+  save: null,
+  close: null,
+  gallery: [null, null, null, null, null, null],
+})
 
 export default function Studio() {
   const { id } = useParams()
@@ -22,6 +33,8 @@ export default function Studio() {
   const [muted, setMuted] = useState(false)
   const [palette, setPalette] = useState(0)
   const [font, setFont] = useState(0)
+  const [song, setSong] = useState(0)
+  const [customSong, setCustomSong] = useState(null)
   const [invite, setInvite] = useState(() => ({
     ...demoInvite,
     guest: params.get("to") || demoInvite.guest,
@@ -32,6 +45,8 @@ export default function Studio() {
   const [pop, setPop] = useState(null)
   const [draft, setDraft] = useState({})
   const [rsvp, setRsvp] = useState({ hadir: null, nama: "", ucapan: "", note: "" })
+  const [wishes, setWishes] = useState([])
+  const [wishForm, setWishForm] = useState({ nama: "", teks: "", note: "" })
 
   useEffect(() => {
     const saved = localStorage.getItem("theme")
@@ -47,13 +62,14 @@ export default function Studio() {
       if (d.invite) setInvite((cur) => ({ ...cur, ...d.invite, guest: params.get("to") || d.invite.guest || cur.guest }))
       if (typeof d.palette === "number") setPalette(d.palette)
       if (typeof d.font === "number") setFont(d.font)
+      if (typeof d.song === "number") setSong(d.song)
     } catch { /* ignore */ }
   }, [tema, params])
 
   useEffect(() => {
     if (!tema) return
-    localStorage.setItem(DRAFT_KEY(tema.id), JSON.stringify({ invite, palette, font }))
-  }, [tema, invite, palette, font])
+    localStorage.setItem(DRAFT_KEY(tema.id), JSON.stringify({ invite, palette, font, song }))
+  }, [tema, invite, palette, font, song])
 
   useEffect(() => {
     const a = audioRef.current
@@ -125,6 +141,26 @@ export default function Studio() {
     setRsvp((cur) => ({ ...cur, [key]: value, note: "" }))
   }
 
+  function handleWish(key, value) {
+    if (key === "kirim") {
+      if (!wishForm.nama.trim() || !wishForm.teks.trim()) {
+        setWishForm((c) => ({ ...c, note: "Isi nama dan ucapan." }))
+        return
+      }
+      setWishes((list) => [{ nama: wishForm.nama.trim(), teks: wishForm.teks.trim() }, ...list])
+      setWishForm({ nama: "", teks: "", note: "Ucapan tampil di pratinjau. Tanpa login." })
+      return
+    }
+    setWishForm((c) => ({ ...c, [key]: value, note: "" }))
+  }
+
+  function handleSongFile(file) {
+    if (!file) return
+    if (customSong?.url) URL.revokeObjectURL(customSong.url)
+    setCustomSong({ url: URL.createObjectURL(file), name: file.name })
+    setPick(null)
+  }
+
   if (!tema) {
     return (
       <div className="studio missing">
@@ -135,7 +171,9 @@ export default function Studio() {
   }
 
   const price = `${Math.round(tema.price / 1000)}rb`
-  const musicSrc = `${import.meta.env.BASE_URL}music/hitam-putih.mp3`
+  const ThemeView = themes[tema.id] || HitamPutih
+  const songs = tema.songs || [{ id: "default", name: "Tema", file: (tema.music || "music/hitam-putih.mp3").replace(/^\//, "") }]
+  const musicSrc = customSong?.url || `${import.meta.env.BASE_URL}${songs[song]?.file || "music/hitam-putih.mp3"}`
 
   return (
     <div className="studio">
@@ -151,7 +189,7 @@ export default function Studio() {
       )}
 
       <div className="preview-wrap" style={themeStyle}>
-        <HitamPutih
+        <ThemeView
           invite={invite}
           photos={photos}
           onPhoto={handlePhoto}
@@ -161,6 +199,9 @@ export default function Studio() {
           editing={editing}
           rsvp={rsvp}
           onRsvp={handleRsvp}
+          wishes={wishes}
+          wishForm={wishForm}
+          onWish={handleWish}
         />
       </div>
 
@@ -180,6 +221,19 @@ export default function Studio() {
                 {f.name}
               </button>
             ))}
+            {pick === "lagu" && (
+              <>
+                {songs.map((s, i) => (
+                  <button key={s.id} className={!customSong && i === song ? "pill on" : "pill"} type="button" onClick={() => { setSong(i); setCustomSong(null); setPick(null) }}>
+                    {s.name}
+                  </button>
+                ))}
+                <label className={customSong ? "pill on" : "pill"}>
+                  {customSong ? "Musik sendiri" : "Unggah"}
+                  <input type="file" accept="audio/*" hidden onChange={(e) => handleSongFile(e.target.files?.[0])} />
+                </label>
+              </>
+            )}
           </div>
         )}
 
@@ -190,6 +244,9 @@ export default function Studio() {
             </button>
             <button className={pick === "huruf" ? "tool on" : "tool"} type="button" onClick={() => setPick(pick === "huruf" ? null : "huruf")}>
               <span className="material-symbols-outlined">title</span>
+            </button>
+            <button className={pick === "lagu" ? "tool on" : "tool"} type="button" onClick={() => setPick(pick === "lagu" ? null : "lagu")}>
+              <span className="material-symbols-outlined">music_note</span>
             </button>
           </div>
         )}
