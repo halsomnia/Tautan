@@ -1,4 +1,5 @@
 import Countdown from "../../components/Countdown"
+import InlineText from "../../components/InlineText"
 import PhotoSlot from "../../components/PhotoSlot"
 import { formatTanggalPanjang } from "../../data/demoInvite"
 import "./HitamPutih.css"
@@ -21,6 +22,7 @@ export default function HitamPutih({
   onPhoto,
   open,
   onOpen,
+  onField = () => {},
   editing = false,
   rsvp,
   onRsvp,
@@ -48,14 +50,16 @@ export default function HitamPutih({
         <div className="hp-cover-inner">
           <p className="hp-kicker">The wedding of</p>
           <h1 className="hp-script">
-            {invite.wanita}
+            <InlineText editing={editing} value={invite.wanita} onChange={(v) => onField("wanita", v)} placeholder="Alya" />
             <span className="hp-amp">&</span>
-            {invite.pria}
+            <InlineText editing={editing} value={invite.pria} onChange={(v) => onField("pria", v)} placeholder="Raka" />
           </h1>
           <p className="hp-date">{tanggal}</p>
           <p className="hp-to">
             Kepada Yth.
-            <b>{invite.guest || "Tamu Undangan"}</b>
+            <b>
+              <InlineText editing={editing} value={invite.guest} onChange={(v) => onField("guest", v)} placeholder="Tamu Undangan" />
+            </b>
           </p>
           {!open && (
             <button type="button" className="hp-open" onClick={onOpen}>
@@ -98,13 +102,15 @@ export default function HitamPutih({
                 <div className="hp-photo empty">Foto</div>
               )}
               <p className="hp-role">Mempelai wanita</p>
-              <h2>{invite.wanitaLengkap}</h2>
+              <h2>
+                <InlineText editing={editing} value={invite.wanitaLengkap} onChange={(v) => onField("wanitaLengkap", v)} />
+              </h2>
               <p className="hp-parents">
                 Putri dari
                 <br />
-                {invite.ayahWanita}
+                <InlineText editing={editing} value={invite.ayahWanita} onChange={(v) => onField("ayahWanita", v)} />
                 <br />
-                &amp; {invite.ibuWanita}
+                &amp; <InlineText editing={editing} value={invite.ibuWanita} onChange={(v) => onField("ibuWanita", v)} />
               </p>
             </div>
             <div className="hp-person">
@@ -120,13 +126,15 @@ export default function HitamPutih({
                 <div className="hp-photo empty">Foto</div>
               )}
               <p className="hp-role">Mempelai pria</p>
-              <h2>{invite.priaLengkap}</h2>
+              <h2>
+                <InlineText editing={editing} value={invite.priaLengkap} onChange={(v) => onField("priaLengkap", v)} />
+              </h2>
               <p className="hp-parents">
                 Putra dari
                 <br />
-                {invite.ayahPria}
+                <InlineText editing={editing} value={invite.ayahPria} onChange={(v) => onField("ayahPria", v)} />
                 <br />
-                &amp; {invite.ibuPria}
+                &amp; <InlineText editing={editing} value={invite.ibuPria} onChange={(v) => onField("ibuPria", v)} />
               </p>
             </div>
           </section>

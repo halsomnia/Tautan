@@ -1,12 +1,11 @@
 import "./CoverThumb.css"
 
-export default function CoverThumb({ name = "Hitam Putih", couple = "Alya & Raka" }) {
+export default function CoverThumb({ name = "Tema", couple = "Alya & Raka", variant = "editorial" }) {
   return (
-    <div className="thumb-cover" aria-hidden="true">
+    <div className={`thumb-cover ${variant}`} aria-hidden="true">
       <span className="thumb-kicker">The wedding of</span>
       <strong>{couple}</strong>
       <em>{name}</em>
-      <span className="thumb-frame" />
     </div>
   )
 }

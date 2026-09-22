@@ -64,9 +64,67 @@ const editorialPack = {
     { id: "klasik", name: "Klasik", display: "Allura", title: "Playfair Display", body: "Lora" },
   ],
   songs: [
-    { id: "piano", name: "Piano malam" },
-    { id: "gitar", name: "Gitar sore" },
-    { id: "biola", name: "Biola tenang" },
+    { id: "piano", name: "Piano" },
+    { id: "gitar", name: "Gitar" },
+    { id: "biola", name: "Biola" },
+  ],
+}
+
+const vintagePack = {
+  layout: "vintage",
+  palettes: [
+    {
+      id: "krem",
+      name: "Krem",
+      font: 0,
+      colors: {
+        bg: "#f3e6d8",
+        surface: "#fbf3e8",
+        ink: "#6b3a2f",
+        accent: "#c4a574",
+        mute: "#a4846a",
+        line: "#e2d0bc",
+        overlay: "rgba(80, 48, 36, 0.35)",
+      },
+    },
+    {
+      id: "mawar",
+      name: "Mawar",
+      font: 0,
+      colors: {
+        bg: "#f4ede6",
+        surface: "#fff8f2",
+        ink: "#4a3b34",
+        accent: "#b23a3a",
+        mute: "#8a736c",
+        line: "#e6d8ce",
+        overlay: "rgba(74, 59, 52, 0.38)",
+      },
+    },
+    {
+      id: "daun",
+      name: "Daun",
+      font: 1,
+      colors: {
+        bg: "#efe8dc",
+        surface: "#f7f4ec",
+        ink: "#3f4a3c",
+        accent: "#6b7f5a",
+        mute: "#7e8a74",
+        line: "#d8d3c4",
+        overlay: "rgba(63, 74, 60, 0.36)",
+      },
+    },
+  ],
+  fonts: [
+    { id: "romantika", name: "Romantika", display: "Great Vibes", title: "Cormorant Garamond", body: "Lora" },
+    { id: "surat", name: "Surat", display: "Allura", title: "Playfair Display", body: "Source Serif 4" },
+    { id: "tinta", name: "Tinta", display: "Pinyon Script", title: "Libre Baskerville", body: "Lora" },
+  ],
+  songs: [
+    { id: "sore", name: "Sore" },
+    { id: "piano", name: "Piano" },
+    { id: "gending", name: "Gending" },
   ],
 }
 
@@ -76,12 +134,26 @@ export const catalogs = [
     name: "Hitam Putih",
     category: "nikah",
     style: "editorial",
-    desc: "Editorial monokrom. Tenang, rapi, mudah dibaca.",
+    desc: "Editorial monokrom.",
     price: 89000,
     promoPrice: 119000,
     promo: true,
     active: true,
+    thumb: "editorial",
     ...editorialPack,
+  },
+  {
+    id: "vintage",
+    name: "Vintage",
+    category: "nikah",
+    style: "vintage",
+    desc: "Kertas tua, bunga kering.",
+    price: 79000,
+    promoPrice: 99000,
+    promo: true,
+    active: true,
+    thumb: "vintage",
+    ...vintagePack,
   },
 ]
 

@@ -56,24 +56,25 @@ export default function Home() {
       <header className="home-head">
         <div className="word">tautan</div>
         <button className="burger" type="button" onClick={() => setMenu(true)} aria-label="Menu">
-          <span /><span /><span />
+          <span className="material-symbols-outlined">menu</span>
         </button>
       </header>
       <p className="tag">Pilih tema. Isi data. Kami kirim tautannya.</p>
       <label className="search-wrap">
+        <span className="material-symbols-outlined search-ico">search</span>
         <input
           className="search"
-          placeholder="Cari tema, kategori, gaya…"
+          placeholder="Cari tema atau kategori"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
         {q && (
           <button className="search-clear" type="button" onClick={() => setQ("")} aria-label="Hapus pencarian">
-            Hapus
+            <span className="material-symbols-outlined">close</span>
           </button>
         )}
       </label>
-      <div className="chips" role="tablist" aria-label="Filter katalog">
+      <div className="chips" role="tablist" aria-label="Kategori">
         {chips.map((c) => (
           <button
             key={c}
@@ -88,25 +89,16 @@ export default function Home() {
       <div className="grid">
         {items.map((c) => (
           <article key={c.id} className="card">
-            <button type="button" className="thumb-btn" onClick={() => navigate(`/studio/${c.id}`)} aria-label={`Lihat demo ${c.name}`}>
-              <CoverThumb name={c.name} couple="Alya & Raka" />
+            <button type="button" className="thumb-btn" onClick={() => navigate(`/studio/${c.id}`)}>
+              <CoverThumb name={c.name} couple="Alya & Raka" variant={c.thumb} />
+              {c.promo && <span className="badge">Promo</span>}
             </button>
-            {c.promo && <span className="badge">Promo</span>}
             <div className="meta">
-              <div className="row1">
-                <span className="name">{c.name}</span>
-                <span className="cat">{c.category}</span>
-              </div>
-              <p className="desc">{c.desc}</p>
-              <div className="price">
+              <span className="name">{c.name}</span>
+              <span className="price">
                 {c.promoPrice ? <span className="old">{formatPrice(c.promoPrice)}</span> : null}
                 <span className="now">{formatPrice(c.price)}</span>
-              </div>
-              <div className="card-actions">
-                <button type="button" className="demo" onClick={() => navigate(`/studio/${c.id}`)}>
-                  Lihat demo
-                </button>
-              </div>
+              </span>
             </div>
           </article>
         ))}
@@ -114,7 +106,7 @@ export default function Home() {
       {items.length === 0 && (
         <div className="empty">
           <p>Tidak ada tema untuk filter ini.</p>
-          <button type="button" className="demo" onClick={() => { setChip("Semua"); setQ("") }}>
+          <button type="button" className="ghost" onClick={() => { setChip("Semua"); setQ("") }}>
             Tampilkan semua
           </button>
         </div>
