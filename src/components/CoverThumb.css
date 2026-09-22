@@ -11,7 +11,7 @@
   color: #f4efe8;
   text-align: center;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 0;
 }
 .thumb-cover.editorial {
   background:

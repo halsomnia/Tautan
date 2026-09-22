@@ -3,35 +3,30 @@
   max-width: 430px;
   margin: 0 auto;
   background: var(--paper);
-  color: var(--ink);
-  padding-bottom: calc(96px + var(--safe-bottom));
+  padding-bottom: calc(76px + var(--safe-bottom));
 }
-.studio.missing { padding: 24px 16px; display: grid; gap: 12px; }
-.studio-bar {
-  position: sticky;
-  top: 0;
-  z-index: 8;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(10px);
-}
-.back {
-  width: 44px; height: 44px;
-  display: grid; place-items: center;
-  color: inherit; text-decoration: none;
-}
-.word { font-weight: 500; }
-.bar-spacer { width: 44px; }
-
+.studio.missing { padding: 24px 16px; }
 .preview-wrap { background: var(--bg, var(--paper)); }
+
+.float-back, .float-music {
+  position: fixed;
+  top: 12px;
+  z-index: 15;
+  width: 40px; height: 40px;
+  border: 0; border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--ink);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-soft);
+  display: grid; place-items: center;
+  text-decoration: none;
+}
+.float-back { left: max(12px, calc(50% - 203px)); }
+.float-music { right: max(12px, calc(50% - 203px)); }
 
 .studio-dock {
   position: fixed;
-  left: 50%;
-  bottom: 0;
+  left: 50%; bottom: 0;
   transform: translateX(-50%);
   width: min(430px, 100%);
   z-index: 20;
@@ -40,108 +35,79 @@
 .studio-dock > * { pointer-events: auto; }
 
 .float-picks {
-  margin: 0 12px 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
+  margin: 0 16px 8px;
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
 }
 .pal, .pill {
-  border: 0;
-  background: var(--surface);
-  color: var(--ink);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
+  border: 0; background: var(--surface); color: var(--ink);
+  border-radius: 999px; box-shadow: var(--shadow);
 }
-.pal {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  overflow: hidden;
-  height: 32px;
-  padding-right: 10px;
-}
-.pal i { width: 18px; height: 32px; }
-.pal span { padding: 0 8px 0 8px; font-size: 12px; }
+.pal { display: inline-flex; align-items: center; height: 30px; overflow: hidden; padding-right: 10px; }
+.pal i { width: 16px; height: 30px; }
+.pal span { padding: 0 8px; font-size: 12px; }
 .pal.on, .pill.on { outline: 2px solid var(--hati); }
-.pill { padding: 8px 14px; font-size: 13px; }
+.pill { padding: 7px 12px; font-size: 12px; }
 
-.tools {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 12px 8px;
-}
+.tools { display: flex; justify-content: center; gap: 8px; margin: 0 12px 8px; }
 .tool {
-  width: 44px; height: 44px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: var(--shadow);
+  width: 40px; height: 40px; border: 0; border-radius: 999px;
+  background: var(--surface); color: var(--ink); box-shadow: var(--shadow);
   display: grid; place-items: center;
 }
 .tool.on { background: var(--hati); color: #fff; }
 
 .bar {
-  display: flex;
-  gap: 10px;
-  padding: 10px 12px calc(12px + var(--safe-bottom));
-  pointer-events: auto;
+  display: flex; justify-content: center; gap: 8px;
+  padding: 8px 16px calc(12px + var(--safe-bottom));
 }
 .edit, .order {
-  min-height: 52px;
+  min-height: 40px;
+  padding: 0 18px;
   border-radius: 999px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   box-shadow: var(--shadow);
 }
-.edit {
-  flex: 1.15;
-  border: 0;
-  background: var(--surface);
-  color: var(--ink);
-}
+.edit { border: 0; background: var(--surface); color: var(--ink); }
 .edit.on { background: var(--ink); color: var(--paper); }
-.order {
-  flex: 1;
-  border: 0;
-  background: var(--hati);
-  color: #fff;
-}
-.order:disabled { opacity: 0.38; }
+.order { border: 0; background: var(--hati); color: #fff; }
+.order:disabled { opacity: 0.35; }
 
 .sheet {
-  margin: 0 12px 8px;
+  margin: 0 16px 8px;
   background: var(--surface);
-  border-radius: 28px;
+  border-radius: 24px;
   padding: 14px 16px 16px;
   box-shadow: var(--shadow);
-  display: grid;
-  gap: 8px;
+  display: grid; gap: 8px;
 }
-.sheet-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 600;
-}
-.close { border: 0; background: transparent; width: 36px; height: 36px; display: grid; place-items: center; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+.close { border: 0; background: transparent; width: 32px; height: 32px; display: grid; place-items: center; }
 .sum { font-size: 12px; color: var(--mute); }
 .sheet input {
-  width: 100%;
-  border: 0;
-  background: var(--paper);
-  border-radius: 16px;
-  padding: 12px 14px;
+  width: 100%; border: 0; background: var(--paper); border-radius: 16px; padding: 11px 14px;
 }
 .order-send {
-  border: 0;
-  background: var(--hati);
-  color: #fff;
-  border-radius: 999px;
-  min-height: 46px;
-  font-weight: 600;
+  border: 0; background: var(--hati); color: #fff; border-radius: 999px; min-height: 42px; font-weight: 600;
 }
 .note { font-size: 12px; color: var(--hati); }
+
+.pop-wrap { position: fixed; inset: 0; z-index: 40; }
+.pop-dim { position: absolute; inset: 0; border: 0; background: rgba(16,14,13,.4); }
+.pop {
+  position: absolute; left: 50%; bottom: 88px; transform: translateX(-50%);
+  width: min(360px, calc(100% - 32px));
+  background: var(--surface); color: var(--ink);
+  border-radius: 24px; padding: 16px; box-shadow: var(--shadow);
+  display: grid; gap: 10px;
+}
+.pop h3 { font-size: 15px; font-weight: 600; }
+.pop label { display: grid; gap: 4px; font-size: 12px; color: var(--mute); }
+.pop input, .pop textarea {
+  width: 100%; border: 0; background: var(--paper); color: var(--ink);
+  border-radius: 14px; padding: 10px 12px; font: inherit; font-size: 14px;
+}
+.pop-save {
+  border: 0; background: var(--hati); color: #fff;
+  border-radius: 999px; min-height: 42px; font-weight: 600;
+}
